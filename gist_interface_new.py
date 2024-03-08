@@ -5,39 +5,36 @@ from io import BytesIO
 import urllib.request
 
 def app():
-    st.image("images/logo.png", width=200)
-    st.markdown('<p class="header">Your Text</p>', unsafe_allow_html=True)
-    left_column, right_column = st.columns(2)
     
-    st.write('# Left Section')
-    input_selection = left_column.selectbox('Select input type', ['Text', 'URL', 'PDF'])
-    
-    if input_selection == 'Text':
-        txt = left_column.text_area("Insert your text here")
-        if st.button('Submit Text'):
-            result = parse_txt(txt)
-            st.write(result)
-
-    elif input_selection == 'URL':
-        url = left_column.text_input("Insert the URL here")
-        if st.button('Submit URL'):
-            result = parse_url(url)
-            st.write(result)
-
-    elif input_selection == 'PDF':
-        uploaded_file = st.file_uploader("Upload a file")
-        if uploaded_file is not None:
-            if st.button('Submit PDF'):
-                result = parse_pdf(uploaded_file.read())
-                st.write(result)
-                
-    if st.button('Publish'):
-        #save to db
+    st.sidebar.image("images/machine-learning-examples-applications.png", width=200)
+    # Object notation
+    # Using object notation
+    add_selectbox = st.sidebar.selectbox(
+    "How would you like Upload the Content?",
+    ("Text", "URL", "PDF")
+    )
+    if add_selectbox == 'PDF':
+        pdf_input = st.sidebar.file_uploader("Upload a file")
+    elif add_selectbox == 'URL':
+        url_input = st.sidebar.text_input("Enter the URL")
+    else:
+        # Perform further processing with the text
+        text_input = st.sidebar.text_area("Enter the text")
+        
+    submit_button = st.sidebar.button("Publish")
+    if submit_button:
+        # Perform action on submit
         pass
+    
+    st.markdown('<p class="title">MetaMorphous Minds</p>', unsafe_allow_html=True)
+    row1 = st.columns(3)
+    row2 = st.columns(3)
+    i = 0
+    for col in row1 + row2:
+        tile = col.container()
+        tile.write("Tile " + str(i))
+        tile._text_area("NEWS TEXT")  
 
-    # Right Section
-    st.write('# Right Section')
-    st.write("News Feed Here")
 
 def parse_txt(txt):
     # your text parsing logic here
